@@ -1,23 +1,30 @@
 {
-  "name": "grunt-contrib-qunit",
-  "description": "Run QUnit unit tests in a headless PhantomJS instance.",
-  "version": "0.2.2",
-  "homepage": "https://github.com/gruntjs/grunt-contrib-qunit",
+  "name": "grunt-monkeytestjs",
+  "description": "Run MonkeyTestJS integration tests in a headless PhantomJS instance.",
+  "version": "0.0.1",
+  "homepage": "https://github.com/TheMonkeys/grunt-MonkeytestJS",
   "author": {
-    "name": "Grunt Team",
-    "url": "http://gruntjs.com/"
+    "name": "The Monkeys",
+    "url": "http://themonkeys.com.au/"
   },
+  "contributors": [
+    {
+        "name": "Mitermayer Reis",
+        "email": "mitermayer.reis@gmail.com",
+        "url": "http://job.mitermayer.com"
+    }
+  ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/gruntjs/grunt-contrib-qunit.git"
+    "url": "git://github.com/TheMonkeys/grunt-MonkeytestJS.git"
   },
   "bugs": {
-    "url": "https://github.com/gruntjs/grunt-contrib-qunit/issues"
+    "url": "https://github.com/TheMonkeys/grunt-MonkeytestJS/issues"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/gruntjs/grunt-contrib-qunit/blob/master/LICENSE-MIT"
+      "url": "https://github.com/TheMonkeys/grunt-MonkeytestJS/blob/master/LICENSE-MIT"
     }
   ],
   "main": "Gruntfile.js",
