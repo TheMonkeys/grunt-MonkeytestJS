@@ -135,11 +135,11 @@ module.exports = function(grunt) {
   // Pass-through console.log statements.
   phantomjs.on('console', console.log.bind(console));
 
-  grunt.registerMultiTask('qunit', 'Run QUnit unit tests in a headless PhantomJS instance.', function() {
+  grunt.registerMultiTask('monkeytestjs', 'Run MonkeyTestJS integration tests in a headless PhantomJS instance.', function() {
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
       // Default PhantomJS timeout.
-      timeout: 5000,
+      timeout: 6000,
       // QUnit-PhantomJS bridge file to be injected.
       inject: asset('phantomjs/bridge.js'),
       // Explicit non-file URLs to test.
