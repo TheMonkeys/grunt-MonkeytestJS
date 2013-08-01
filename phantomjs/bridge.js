@@ -7,7 +7,7 @@
  */
 
 /*global QUnit:true, alert:true*/
-(function () {
+(function (global) {
   'use strict';
 
   // Don't re-order tests.
@@ -55,4 +55,10 @@
   QUnit.done(function(obj) {
     sendMessage('qunit.done', obj.failed, obj.passed, obj.total, obj.runtime);
   });
-}());
+
+  monkeytestjs.onFinish(function() {
+     sendMessage('qunit.finishedMonkeyTestJS');
+  });
+
+
+}(this));

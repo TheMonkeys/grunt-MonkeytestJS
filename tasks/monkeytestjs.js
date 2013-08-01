@@ -48,9 +48,23 @@ module.exports = function(grunt) {
     }
   };
 
+  var finishExecution = function() {
+        phantomjs.halt();
+        // Print assertion errors here, if verbose mode is disabled.
+        if (!grunt.option('verbose')) {
+          if (status.failed > 0) {
+            grunt.log.writeln();
+            logFailedAssertions();
+          } else if (status.total === 0) {
+            grunt.warn('0/0 assertions ran (' + status.duration + 'ms)');
+          } else {
+            grunt.log.ok();
+          }
+        }
+  };
+
   // QUnit hooks.
   phantomjs.on('qunit.moduleStart', function(name) {
-    clearTimeout(this._timer);
     unfinished[name] = true;
     currentModule = name;
   });
@@ -69,7 +83,6 @@ module.exports = function(grunt) {
   });
 
   phantomjs.on('qunit.testStart', function(name) {
-    clearTimeout(this._timer);
     currentTest = (currentModule ? currentModule + ' - ' : '') + name;
     grunt.verbose.write(currentTest + '...');
   });
@@ -94,22 +107,10 @@ module.exports = function(grunt) {
     status.passed += passed;
     status.total += total;
     status.duration += duration;
+  });
 
-    clearTimeout(this._timer);
-    this._timer = setTimeout(function() {
-        phantomjs.halt();
-        // Print assertion errors here, if verbose mode is disabled.
-        if (!grunt.option('verbose')) {
-          if (failed > 0) {
-            grunt.log.writeln();
-            logFailedAssertions();
-          } else if (total === 0) {
-            grunt.warn('0/0 assertions ran (' + duration + 'ms)');
-          } else {
-            grunt.log.ok();
-          }
-        }
-    }, 5000);
+  phantomjs.on('qunit.finishedMonkeyTestJS', function() {
+      finishExecution();
   });
 
   // Re-broadcast qunit events on grunt.event.
@@ -139,7 +140,7 @@ module.exports = function(grunt) {
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
       // Default PhantomJS timeout.
-      timeout: 6000,
+      timeout: 15000,
       // QUnit-PhantomJS bridge file to be injected.
       inject: asset('phantomjs/bridge.js'),
       // Explicit non-file URLs to test.
