@@ -63,6 +63,8 @@ module.exports = function(grunt) {
         }
   };
 
+  var startTime = new Date();
+
   // QUnit hooks.
   phantomjs.on('qunit.moduleStart', function(name) {
     unfinished[name] = true;
@@ -74,6 +76,10 @@ module.exports = function(grunt) {
   });
 
   phantomjs.on('qunit.log', function(result, actual, expected, message, source) {
+
+    status[result ? "passed" : "failed"]+=1;
+    status.total = status.passed + status.failed;
+
     if (!result) {
       failedAssertions.push({
         actual: actual, expected: expected, message: message, source: source,
@@ -102,11 +108,8 @@ module.exports = function(grunt) {
     }
   });
 
-  phantomjs.on('qunit.done', function(failed, passed, total, duration) {
-    status.failed = failed;
-    status.passed = passed;
-    status.total = total;
-    status.duration = duration;
+  phantomjs.on('qunit.done', function(duration) {
+      status.duration = duration;
   });
 
   phantomjs.on('qunit.finishedMonkeyTestJS', function() {

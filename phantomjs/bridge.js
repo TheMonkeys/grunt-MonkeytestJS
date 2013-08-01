@@ -53,7 +53,7 @@
   });
 
   QUnit.done(function(obj) {
-    sendMessage('qunit.done', obj.failed, obj.passed, obj.total, obj.runtime);
+    sendMessage('qunit.done', obj.runtime);
   });
 
   monkeytestjs.onFinish(function() {
