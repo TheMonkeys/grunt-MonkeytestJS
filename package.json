@@ -1,7 +1,7 @@
 {
   "name": "grunt-monkeytestjs",
   "description": "Run MonkeyTestJS integration tests in a headless PhantomJS instance.",
-  "version": "0.0.3a",
+  "version": "0.0.4",
   "homepage": "https://github.com/TheMonkeys/grunt-MonkeytestJS",
   "author": {
     "name": "The Monkeys",
@@ -9,9 +9,9 @@
   },
   "contributors": [
     {
-        "name": "Mitermayer Reis",
-        "email": "mitermayer.reis@gmail.com",
-        "url": "http://job.mitermayer.com"
+      "name": "Mitermayer Reis",
+      "email": "mitermayer.reis@gmail.com",
+      "url": "http://job.mitermayer.com"
     }
   ],
   "repository": {

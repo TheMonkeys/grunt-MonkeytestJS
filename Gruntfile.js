@@ -19,14 +19,28 @@
         jshintrc: '.jshintrc'
       }
     },
-
-    // Unit tests.
+    connect: {
+        server: {
+          options: {
+            port: 8000,
+            base: '.'
+          }   
+        }   
+    }, 
     monkeytestjs: {
-      url: {
+      onlineUrl: {
         options: {
           urls: [
             // this will later on point to the monkeytestJS web demo page
             'http://themonkeys.github.io/MonkeytestJS/tests/index.html'
+          ]
+        }
+      },
+      localFileServerUrl: {
+        options: {
+          urls: [
+            // this will later on point to the monkeytestJS web demo page
+            'http://localhost:8000/tests/index.html'
           ]
         }
       }
@@ -40,9 +54,12 @@
   // These plugins provide necessary tasks.
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-internal');
+  grunt.loadNpmTasks('grunt-contrib-connect');
+
+  grunt.registerTask('servertest', ['connect', 'monkeytestjs:localFileServerUrl']);
 
   // Whenever the "test" task is run, run some basic tests.
-  grunt.registerTask('test', ['monkeytestjs']);
+  grunt.registerTask('test', ['monkeytestjs:onlineUrl', 'servertest']);
 
   // By default, lint and run all tests.
   grunt.registerTask('default', ['jshint', 'test', 'build-contrib']);
