@@ -26,8 +26,7 @@
         options: {
           urls: [
             // this will later on point to the monkeytestJS web demo page
-            'http://prototype.dev/tests/index.html'
-            //'http://themonkeys.github.io/MonkeytestJS/tests/index.html'
+            'http://themonkeys.github.io/MonkeytestJS/tests/index.html'
           ]
         }
       }
