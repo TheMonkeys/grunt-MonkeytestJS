@@ -103,10 +103,10 @@ module.exports = function(grunt) {
   });
 
   phantomjs.on('qunit.done', function(failed, passed, total, duration) {
-    status.failed += failed;
-    status.passed += passed;
-    status.total += total;
-    status.duration += duration;
+    status.failed = failed;
+    status.passed = passed;
+    status.total = total;
+    status.duration = duration;
   });
 
   phantomjs.on('qunit.finishedMonkeyTestJS', function() {
