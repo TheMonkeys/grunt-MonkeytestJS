@@ -64,7 +64,6 @@ The line `middleware: require('./tasks/monkeytestjs.js').proxy` is a nodejs iple
 ## Contributors
    - Mitermayer Reis - @mitermayer
    - Peter Feltham  - @felthy
-   - Thomas Garrood - @sandboxdigital
 
 
 ** Change log **
