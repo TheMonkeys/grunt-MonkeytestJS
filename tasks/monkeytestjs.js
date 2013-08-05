@@ -8,7 +8,9 @@
 
 'use strict';
 
-module.exports = function(grunt) {
+var request = require("request");
+
+var monkeytestjs = function(grunt) {
 
   // Nodejs libs.
   var path = require('path');
@@ -124,10 +126,13 @@ module.exports = function(grunt) {
 
   // Built-in error handlers.
   phantomjs.on('fail.load', function(url) {
+    /*
     phantomjs.halt();
     grunt.verbose.write('Running PhantomJS...').or.write('...');
     grunt.log.error();
     grunt.warn('PhantomJS unable to load "' + url + '" URI.');
+    */
+       console.log("falhou", phantomjs);
   });
 
   phantomjs.on('fail.timeout', function() {
@@ -147,7 +152,7 @@ module.exports = function(grunt) {
       // QUnit-PhantomJS bridge file to be injected.
       inject: asset('phantomjs/bridge.js'),
       // Explicit non-file URLs to test.
-      urls: [],
+      urls: []
     });
 
     // Combine any specified URLs with src files.
@@ -181,7 +186,7 @@ module.exports = function(grunt) {
             // Otherwise, process next url.
             next();
           }
-        },
+        }
       });
     },
     // All tests have been run.
@@ -202,3 +207,105 @@ module.exports = function(grunt) {
   });
 
 };
+
+monkeytestjs.proxy = function(connect, options) {
+
+    var capitaliseFirstLetter = function(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        },
+        isJsonString = function(str) {
+
+           var ret;
+
+           try {
+               ret = JSON.parse(str);
+           } catch(e) {
+               ret = false;
+           }
+
+           return ret;
+        },
+        doResponse = function (error, response, body) {
+
+               var _header = (function(h) {
+                   var str = "";
+
+                   for(var prop in h) {
+                      if( h.hasOwnProperty(prop) ) {
+                         str+= capitaliseFirstLetter(prop);
+                         str+= ": ";
+                         str+= h[prop];
+                         str+= "\r\n\r\n";
+                      }
+                   }
+
+                   return str;
+               }(response.headers));
+
+               var jsonObj = isJsonString(response.body),
+                   _content = jsonObj ?
+                       jsonObj :
+                       _header + response.body,
+                  _response = {
+                        status: {
+                            http_code: response.statusCode
+                        },
+                        contents: _content
+                   },
+                   header = {
+                       "content-type": 'application/json'
+                   };
+
+               // we give a json back as response
+               _response = JSON.stringify(_response);
+
+               return {
+                    header: header,
+                    statusCode: response.statusCode,
+                    body: _response
+               };
+        },
+        doRequest = function( url, obj, callback ) {
+           request(url, obj, callback);
+        };
+
+    // Return array of whatever middlewares you want
+    return [
+      connect.urlencoded(options.base),
+      connect.query(options.base),
+      function(req, res, next) {
+
+          if( req.url.indexOf("/tests/core/proxy") === 0 ) {
+
+               var url = req.query.url,
+                   header = {
+                       referer: req.url 
+                   },
+                   settings = {
+                       method: req.method,
+                       headers: header, 
+                       followAllRedirects: true,
+                       form: req.body
+                   };
+
+               url = url.indexOf("http") === 0 ? url : "http://" + url;
+
+               doRequest(url, settings, function(error, response, body)  {
+
+                   var _respObj = doResponse(error, response, body);
+
+                   res.writeHead(_respObj.statusCode, _respObj.header);
+                   res.end(_respObj.body);
+               });
+
+            
+          } else {
+              return next();    
+          }
+      },
+      connect.static(options.base),
+      connect.directory(options.base)
+    ];
+};
+
+module.exports = monkeytestjs; 

@@ -6,7 +6,9 @@
  * Licensed under the MIT license.
  */
 
-'use strict'; module.exports = function(grunt) {
+'use strict'; 
+
+module.exports = function(grunt) {
 
   // Project configuration.
   grunt.initConfig({
@@ -22,7 +24,8 @@
     connect: {
         server: {
           options: {
-            port: 8000,
+            port: 9000,
+            middleware: require('./tasks/monkeytestjs.js').proxy,
             base: '.'
           }   
         }   
@@ -31,7 +34,7 @@
       onlineUrl: {
         options: {
           urls: [
-            // this will later on point to the monkeytestJS web demo page
+            // you can test external urls
             'http://themonkeys.github.io/MonkeytestJS/tests/index.html'
           ]
         }
@@ -39,8 +42,8 @@
       localFileServerUrl: {
         options: {
           urls: [
-            // this will later on point to the monkeytestJS web demo page
-            'http://localhost:8000/tests/index.html'
+            // you can run a server to test local files
+            'http://localhost:9000/tests/index.html'
           ]
         }
       }
@@ -56,12 +59,10 @@
   grunt.loadNpmTasks('grunt-contrib-internal');
   grunt.loadNpmTasks('grunt-contrib-connect');
 
-  grunt.registerTask('servertest', ['connect', 'monkeytestjs:localFileServerUrl']);
-
-  // Whenever the "test" task is run, run some basic tests.
-  grunt.registerTask('test', ['monkeytestjs:onlineUrl', 'servertest']);
+  grunt.registerTask('localUrl', ['connect', 'monkeytestjs:localFileServerUrl']);
+  grunt.registerTask('test', ['monkeytestjs:onlineUrl', 'localUrl']);
 
   // By default, lint and run all tests.
-  grunt.registerTask('default', ['jshint', 'test', 'build-contrib']);
+  grunt.registerTask('default', ['jshint', 'test']);
 
 };
