@@ -68,6 +68,7 @@ The line `middleware: require('./tasks/monkeytestjs.js').proxy` is a nodejs iple
 
 **Change log**
 
+   - **0.0.8** - Updated demo with MonkeytestJS 1.0.1 and add license and contributors file
    - **0.0.7** - Added latest monkeytestjs on the tests folder
    - **0.0.6** - Fixed proxy errors on 302 and 301 redirecting posts, also pointed 'grunt-lib-phantomjs' on the package.json file to point to a fork while 'https://github.com/gruntjs/grunt-lib-phantomjs/pull/24' pull request is not merged.
    - **0.0.5** - Integrated a proxy to load cross domain files assync in order to work the same as the inbuild proxy.php that come with MonkeytestJS
