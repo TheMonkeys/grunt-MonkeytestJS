@@ -1,7 +1,7 @@
 {
   "name": "grunt-monkeytestjs",
   "description": "Run MonkeyTestJS integration tests in a headless PhantomJS instance or over an external URL.",
-  "version": "0.0.8.1",
+  "version": "0.0.9",
   "homepage": "https://github.com/TheMonkeys/grunt-MonkeytestJS",
   "author": {
     "name": "The Monkeys",
